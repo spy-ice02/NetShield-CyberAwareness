@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetShield - UPI & Payment Frauds</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Rajdhani', 'sans-serif'], orbitron: ['Orbitron', 'sans-serif'] },
+                    colors: {
+                        navy: '#0b1120',
+                        card: '#1e293b',
+                        accent: '#38bdf8', /* Neon Blue */
+                        danger: '#ef4444', /* Neon Red */
+                        warning: '#eab308',
+                        success: '#22c55e'
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        h1, h2, h3, h4, h5, h6, .font-orbitron {
+            font-family: 'Orbitron', sans-serif !important;
+            letter-spacing: 0.05em;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #0b1120;
+            color: #f1f5f9;
+            scroll-behavior: smooth;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .danger-gradient-text {
+            background: linear-gradient(to right, #ef4444, #f87171);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.2);
+        }
+
+        /* News Ticker Animation */
+        .scrolling-wrapper {
+            max-height: 400px;
+            overflow: hidden;
+            position: relative;
+            mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent 100%);
+        }
+
+        .scrolling-content {
+            animation: scrollFeed 25s linear infinite;
+        }
+        
+        /* Pause on hover */
+        .scrolling-wrapper:hover .scrolling-content {
+            animation-play-state: paused;
+        }
+
+        @keyframes scrollFeed {
+            0% { transform: translateY(100%); }
+            100% { transform: translateY(-100%); }
+        }
+
+        /* Mobile Sidebar toggle */
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        @media (max-width: 768px) {
+            #sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                z-index: 50;
+            }
+            #sidebar.open {
+                transform: translateX(0);
+            }
+        }
+
+        #cursor-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -5;
+            /* Behind content but above particles which are -10 */
+            background: radial-gradient(circle 400px at var(--mouse-x, 50vw) var(--mouse-y, 50vh), rgba(56, 189, 248, 0.15), transparent 80%);
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="antialiased flex h-screen overflow-hidden relative">
+
+    <!-- Mouse Glow Tracker -->
+    <div id="cursor-glow"></div>
+
+    <!-- Sci-Fi Particles Background -->
+    <div id="particles-js" class="fixed inset-0 -z-10 opacity-100 pointer-events-none"></div>
+
+    <!-- Mobile Header (Visible only on small screens) -->
+    <div class="md:hidden fixed top-0 w-full glass-panel z-40 p-4 border-b border-slate-700 flex justify-between items-center">
+        <a href="index.html" class="text-xl font-bold gradient-text flex items-center"><i class="fa-solid fa-arrow-left text-base mr-3 opacity-80 pt-0.5"></i><img src="logo.png" alt="Logo" class="h-6 w-auto mr-2">NetShield</a>
+        <button id="menu-btn" class="text-gray-300 text-2xl focus:outline-none"><i class="fa-solid fa-bars"></i></button>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="w-64 glass-panel h-full border-r border-slate-800 flex flex-col pt-16 md:pt-0 shrink-0">
+        <div class="p-6">
+            <a href="index.html" class="flex items-center text-sm text-gray-400 hover:text-accent mb-6 transition"><i class="fa-solid fa-angle-left mr-2"></i> Back to Hub</a>
+            <h1 class="text-2xl font-bold gradient-text mb-2 flex items-center"><img src="logo.png" alt="NetShield Logo" class="h-8 mr-3 drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">NetShield</h1>
+            <p class="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-8">Dashboard</p>
+            
+            <nav class="space-y-2">
+                <a href="#intro" class="flex items-center p-3 rounded-lg text-gray-300 hover:bg-slate-800 hover:text-accent transition">
+                    <i class="fa-solid fa-circle-info w-6"></i> Introduction
+                </a>
+                <a href="#modus-operandi" class="flex items-center p-3 rounded-lg text-gray-300 hover:bg-slate-800 hover:text-danger transition">
+                    <i class="fa-solid fa-user-secret w-6"></i> Modus Operandi
+                </a>
+                <a href="#prevention" class="flex items-center p-3 rounded-lg text-gray-300 hover:bg-slate-800 hover:text-accent transition">
+                    <i class="fa-solid fa-shield-check w-6"></i> Prevention Tips
+                </a>
+                <a href="#news" class="flex items-center p-3 rounded-lg text-gray-300 hover:bg-slate-800 hover:text-warning transition">
+                    <i class="fa-solid fa-newspaper w-6"></i> Live Case Studies
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 h-full overflow-y-auto w-full pt-16 md:pt-0 bg-slate-900/40 custom-scrollbar relative scroll-smooth">
+        
+        <div class="max-w-5xl mx-auto p-6 md:p-12 pb-24">
+            
+            <!-- Page Header -->
+            <div class="mb-12 border-b border-slate-800 pb-8">
+                <div class="inline-block px-3 py-1 bg-accent/20 border border-accent/40 text-accent rounded-full text-xs font-bold mb-4">Educational Guide</div>
+                <h1 class="text-4xl md:text-5xl font-extrabold mb-4 text-white">UPI & Payment Frauds</h1>
+                <p class="text-lg text-gray-400">Understanding exactly how scammers exploit the system, and the single golden rule to protect your hard-earned money.</p>
+            </div>
+
+            <!-- Introduction Section (Warning Theme) -->
+            <section id="intro" class="mb-16">
+                <div class="glass-panel p-8 rounded-2xl border-l-4 border-l-warning relative overflow-hidden">
+                    <i class="fa-solid fa-triangle-exclamation absolute -right-4 -bottom-4 text-9xl text-warning opacity-10"></i>
+                    <h2 class="text-2xl font-bold mb-4 text-white flex items-center"><i class="fa-solid fa-magnifying-glass text-warning mr-3"></i> The Core Reality of UPI Scams</h2>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        The UPI infrastructure itself is highly secure. Scammers rarely "hack" the app or the bank server. Instead, they use <strong>Social Engineering (Mental Manipulation)</strong> to create panic, urgency, or greed, tricking the user into willingly handing over control or authorizing payments.
+                    </p>
+                    <div class="bg-warning/10 p-5 rounded-lg border border-warning/30">
+                        <h3 class="text-xl font-black text-warning mb-2 uppercase tracking-wide">The Golden Rule</h3>
+                        <p class="text-white text-lg font-medium">Entering your UPI PIN is <u class="decoration-warning decoration-wavy underline-offset-4">ONLY required for SENDING money</u>. You will NEVER need to enter your PIN to receive money.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Modus Operandi (Danger Theme) -->
+            <section id="modus-operandi" class="mb-16 pt-8">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold mb-2 flex items-center"><i class="fa-solid fa-skull-crossbones text-danger mr-3"></i> How Scams Work (Modus Operandi)</h2>
+                    <div class="w-16 h-1 bg-danger rounded"></div>
+                    <p class="text-gray-400 mt-3">The four most common techniques scammers use right now to drain your accounts.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Card 1 -->
+                    <div class="glass-panel p-6 rounded-xl border border-slate-700 hover:border-danger/50 transition">
+                        <h3 class="text-xl font-bold text-danger mb-3 flex items-center"><i class="fa-solid fa-qrcode mr-2"></i> QR Code Scam (OLX/Quikr)</h3>
+                        <p class="text-sm text-gray-400 flex-1">On marketplaces, a fraudster poses as a buyer, agrees to your price, and sends a QR code via WhatsApp. They claim scanning it will transfer funds into your account. In reality, scanning it initiates a debit from your account to theirs.</p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="glass-panel p-6 rounded-xl border border-slate-700 hover:border-danger/50 transition">
+                        <h3 class="text-xl font-bold text-danger mb-3 flex items-center"><i class="fa-solid fa-mobile-screen mr-2"></i> Screen Sharing Traps</h3>
+                        <p class="text-sm text-gray-400 flex-1">Scammers pose as bank or app support and guide you to install apps like AnyDesk or TeamViewer. Once installed, they see your screen live, send an OTP to your phone, read it off your screen, and complete fraudulent transactions.</p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="glass-panel p-6 rounded-xl border border-slate-700 hover:border-danger/50 transition">
+                        <h3 class="text-xl font-bold text-danger mb-3 flex items-center"><i class="fa-solid fa-hand-holding-dollar mr-2"></i> 'Collect Request' Trap</h3>
+                        <p class="text-sm text-gray-400 flex-1">You get a notification on GPay or PhonePe saying you've won a cashback. It's actually a "Collect Request" initiated by the scammer. The screen says "Enter PIN to receive reward." Doing so gives them the money instead.</p>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="glass-panel p-6 rounded-xl border border-slate-700 hover:border-danger/50 transition">
+                        <h3 class="text-xl font-bold text-danger mb-3 flex items-center"><i class="fa-solid fa-headset mr-2"></i> Fake Customer Care</h3>
+                        <p class="text-sm text-gray-400 flex-1">Scammers manipulate Google search results or Twitter tags to list their personal numbers as official customer support for Swiggy, Paytm, or Banks. When a genuine victim calls for help, they are smoothly routed into a refund scam.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Prevention Tips (Safety Theme) -->
+            <section id="prevention" class="mb-16 pt-8">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold mb-2 flex items-center text-accent"><i class="fa-solid fa-shield-halved mr-3"></i> Ultimate Prevention Guide</h2>
+                    <div class="w-16 h-1 bg-accent rounded"></div>
+                    <p class="text-gray-400 mt-3">Follow these strict rules to immunize yourself against social engineering.</p>
+                </div>
+
+                <div class="glass-panel p-8 rounded-2xl border border-accent/30 bg-accent/5">
+                    <ul class="space-y-6">
+                        <li class="flex items-start">
+                            <div class="shrink-0 w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent mr-4 mt-1 border border-accent/50"><i class="fa-solid fa-1 font-bold"></i></div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white mb-1">Never Enter PIN to Receive</h4>
+                                <p class="text-gray-400 text-sm">Treat your UPI PIN exactly like an ATM PIN. You don't enter your ATM PIN to take a deposit. The same logic applies to UPI. If the keypad appears, money is leaving your account.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="shrink-0 w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent mr-4 mt-1 border border-accent/50"><i class="fa-solid fa-2 font-bold"></i></div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white mb-1">Block Screen Sharing Promptly</h4>
+                                <p class="text-gray-400 text-sm">Never download AnyDesk, TeamViewer, QuickSupport, or similar apps on the instruction of anyone on a call, no matter how official they sound.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="shrink-0 w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent mr-4 mt-1 border border-accent/50"><i class="fa-solid fa-3 font-bold"></i></div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white mb-1">Use In-App Official Support Only</h4>
+                                <p class="text-gray-400 text-sm">Do not Google customer care numbers. Only use the 'Help & Support' section directly inside your official banking or service application to raise disputes.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="shrink-0 w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent mr-4 mt-1 border border-accent/50"><i class="fa-solid fa-4 font-bold"></i></div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white mb-1">Read the Warning Screen</h4>
+                                <p class="text-gray-400 text-sm">GPay and PhonePe display large, red warnings when you are about to send money to an unknown contact. Do not ignore these system warnings out of a sense of urgency.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- News Feed Section -->
+            <section id="news" class="pt-8">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold mb-2 flex items-center"><i class="fa-solid fa-tower-broadcast text-warning mr-3"></i> Live Threat Feed & Case Studies</h2>
+                    <div class="w-16 h-1 bg-warning rounded"></div>
+                    <p class="text-gray-400 mt-3">Recent real-world incidents showing how these scams are executed in real time.</p>
+                </div>
+
+                <!-- Scrolling Container -->
+                <div class="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
+                    <div class="flex items-center justify-between mb-4 pb-4 border-b border-slate-700">
+                        <span class="text-xs font-bold tracking-widest text-warning uppercase flex items-center"><span class="w-2 h-2 rounded-full bg-warning animate-ping mr-2"></span> Real Time Reports</span>
+                    </div>
+
+                    <div class="scrolling-wrapper">
+                        <div class="scrolling-content space-y-4">
+                            
+                            <!-- 1 -->
+                            <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-danger">
+                                <div class="flex justify-between text-xs text-gray-500 mb-2"><span><i class="fa-solid fa-location-dot mr-1"></i> Pune</span> <span>Recent</span></div>
+                                <h4 class="font-bold text-white mb-1">OLX Furniture QR Scam</h4>
+                                <p class="text-sm text-gray-400">Man lost ₹1.5L. A fake buyer on an online marketplace convinced him to scan a QR code to receive advanced payment for listed furniture.</p>
+                            </div>
+
+                            <!-- 2 -->
+                            <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-danger">
+                                <div class="flex justify-between text-xs text-gray-500 mb-2"><span><i class="fa-solid fa-location-dot mr-1"></i> Mumbai</span> <span>Recent</span></div>
+                                <h4 class="font-bold text-white mb-1">Electricity Disconnection SMS</h4>
+                                <p class="text-sm text-gray-400">Woman duped of ₹80k via a fake SMS claiming her power would be cut at 9 PM. Clicked a link and authorized a tiny ₹10 payment which captured her credentials.</p>
+                            </div>
+
+                            <!-- 3 -->
+                            <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-danger">
+                                <div class="flex justify-between text-xs text-gray-500 mb-2"><span><i class="fa-solid fa-location-dot mr-1"></i> Bangalore</span> <span>Recent</span></div>
+                                <h4 class="font-bold text-white mb-1">Screen Sharing Refund Fraud</h4>
+                                <p class="text-sm text-gray-400">Fake Swiggy refund call led to a ₹2L loss. Victim was instructed to download a screen-sharing app to 'process the refund manually'.</p>
+                            </div>
+
+                            <!-- 4 -->
+                            <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-danger">
+                                <div class="flex justify-between text-xs text-gray-500 mb-2"><span><i class="fa-solid fa-location-dot mr-1"></i> Delhi</span> <span>Recent</span></div>
+                                <h4 class="font-bold text-white mb-1">Cashback Collect Trap</h4>
+                                <p class="text-sm text-gray-400">Senior citizen lost their pension after clicking a notification that claimed they won a scratch card. They entered their UPI PIN to 'unlock' the reward.</p>
+                            </div>
+
+                            <!-- 5 -->
+                            <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-danger">
+                                <div class="flex justify-between text-xs text-gray-500 mb-2"><span><i class="fa-solid fa-location-dot mr-1"></i> Lucknow</span> <span>Recent</span></div>
+                                <h4 class="font-bold text-white mb-1">Army Officer Impersonation</h4>
+                                <p class="text-sm text-gray-400">Student scammed for ₹50k by a fraudster posing as a relocating Army Officer selling a bike. Demanded upfront delivery charges via UPI.</p>
+                            </div>
+
+                            <!-- 6 -->
+                            <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-danger">
+                                <div class="flex justify-between text-xs text-gray-500 mb-2"><span><i class="fa-solid fa-location-dot mr-1"></i> Noida</span> <span>Recent</span></div>
+                                <h4 class="font-bold text-white mb-1">Fake KYC Update Link</h4>
+                                <p class="text-sm text-gray-400">Businessman's account drained completely after fulfilling a fake banking KYC request sent via WhatsApp. Phishing site looked identical to the real bank.</p>
+                            </div>
+
+                            <!-- 7 -->
+                            <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-danger">
+                                <div class="flex justify-between text-xs text-gray-500 mb-2"><span><i class="fa-solid fa-location-dot mr-1"></i> Panipat</span> <span>Recent</span></div>
+                                <h4 class="font-bold text-white mb-1">Google Search Customer Care</h4>
+                                <p class="text-sm text-gray-400">Victim lost ₹3L after directly calling a fake flight refund toll-free number they found heavily promoted via SEO on Google Search.</p>
+                            </div>
+
+                            <!-- 8 -->
+                            <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-warning">
+                                <div class="flex justify-between text-xs text-gray-500 mb-2"><span><i class="fa-solid fa-location-dot mr-1"></i> Hyderabad</span> <span class="text-success font-bold">Arrested</span></div>
+                                <h4 class="font-bold text-white mb-1">Store QR Paste-Over</h4>
+                                <p class="text-sm text-gray-400">Gang busted for physically pasting fake, laminated merchant QR codes over the real codes installed at local grocery shops and petrol pumps.</p>
+                            </div>
+                            
+                            <!-- Duplicate the list for seamless infinite looping -->
+                            <!-- 1 (Duplicate) -->
+                            <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-danger mt-4">
+                                <div class="flex justify-between text-xs text-gray-500 mb-2"><span><i class="fa-solid fa-location-dot mr-1"></i> Pune</span> <span>Recent</span></div>
+                                <h4 class="font-bold text-white mb-1">OLX Furniture QR Scam</h4>
+                                <p class="text-sm text-gray-400">Man lost ₹1.5L. A fake buyer on an online marketplace convinced him to scan a QR code to receive advanced payment for listed furniture.</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        // Smooth scrolling for sidebar links
+        document.querySelectorAll('aside nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
+                
+                // Close mobile menu on click
+                if(window.innerWidth < 768) {
+                    document.getElementById('sidebar').classList.remove('open');
+                }
+            });
+        });
+
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const sidebar = document.getElementById('sidebar');
+
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+        
+        // Active spy roughly based on scroll
+        const sections = document.querySelectorAll('main section');
+        const navLinks = document.querySelectorAll('aside nav a');
+        
+        document.querySelector('main').addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (document.querySelector('main').scrollTop >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('bg-slate-800', 'font-bold');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('bg-slate-800', 'font-bold');
+                }
+            });
+        });
+
+        
+        // Mouse Glow effect tracking
+        document.addEventListener('mousemove', (e) => {
+            const glow = document.getElementById('cursor-glow');
+            if (glow) {
+                // Change hue slightly based on mouse position to make it more colorful
+                const hue = Math.round((e.clientX / window.innerWidth) * 80 + 190); // 190 to 270 (cyan to purple)
+                glow.style.background = `radial-gradient(circle 400px at ${e.clientX}px ${e.clientY}px, hsla(${hue}, 100%, 65%, 0.2), transparent 70%)`;
+            }
+        });
+
+        
+        // Mouse Glow effect tracking
+        document.addEventListener('mousemove', (e) => {
+            const glow = document.getElementById('cursor-glow');
+            if (glow) {
+                // Change hue slightly based on mouse position to make it more colorful
+                const hue = Math.round((e.clientX / window.innerWidth) * 80 + 190); // 190 to 270 (cyan to purple)
+                glow.style.background = `radial-gradient(circle 400px at ${e.clientX}px ${e.clientY}px, hsla(${hue}, 100%, 65%, 0.2), transparent 70%)`;
+            }
+        });
+
+        // Initialize particles.js for Sci-Fi Effect
+        if (typeof particlesJS !== 'undefined') {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": { "value": 110, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": ["#38bdf8", "#818cf8", "#c084fc", "#e879f9", "#34d399"] },
+                    "shape": { "type": "circle" },
+                    "opacity": {
+                        "value": 0.9,
+                        "random": true,
+                        "anim": { "enable": true, "speed": 1, "opacity_min": 0.3, "sync": false }
+                    },
+                    "size": {
+                        "value": 4,
+                        "random": true,
+                        "anim": { "enable": true, "speed": 2, "size_min": 1.5, "sync": false }
+                    },
+                    "line_linked": {
+                        "enable": true, "distance": 160, "color": "#818cf8", "opacity": 0.6, "width": 1.5
+                    },
+                    "move": {
+                        "enable": true, "speed": 2, "direction": "none", "random": true, "out_mode": "out"
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "window",
+                    "events": {
+                        "onhover": { "enable": true, "mode": ["grab", "bubble"] },
+                        "onclick": { "enable": true, "mode": "push" },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": { "distance": 220, "line_linked": { "opacity": 0.9 } },
+                        "bubble": { "distance": 200, "size": 6, "duration": 2, "opacity": 1, "speed": 3 },
+                        "push": { "particles_nb": 4 }
+                    }
+                },
+                "retina_detect": true
+            });
+        }
+    </script>
+</body>
+</html>
