@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetShield - Task & Part-Time Job Scams</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Rajdhani', 'sans-serif'], orbitron: ['Orbitron', 'sans-serif'] },
+                    colors: {
+                        navy: '#0b1120',
+                        card: '#1e293b',
+                        accent: '#38bdf8', /* Neon Blue */
+                        emerald-500: '#ef4444', /* Neon Red */
+                        warning: '#eab308',
+                        success: '#22c55e'
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        h1, h2, h3, h4, h5, h6, .font-orbitron {
+            font-family: 'Orbitron', sans-serif !important;
+            letter-spacing: 0.05em;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #0b1120;
+            color: #f1f5f9;
+            scroll-behavior: smooth;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .emerald-500-gradient-text {
+            background: linear-gradient(to right, #ef4444, #f87171);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.2);
+        }
+
+        /* News Ticker Animation */
+        .scrolling-wrapper {
+            max-height: 400px;
+            overflow: hidden;
+            position: relative;
+            mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent 100%);
+        }
+
+        .scrolling-content {
+            animation: scrollFeed 25s linear infinite;
+        }
+        
+        /* Pause on hover */
+        .scrolling-wrapper:hover .scrolling-content {
+            animation-play-state: paused;
+        }
+
+        @keyframes scrollFeed {
+            0% { transform: translateY(100%); }
+            100% { transform: translateY(-100%); }
+        }
+
+        /* Mobile Sidebar toggle */
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        @media (max-width: 768px) {
+            #sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                z-index: 50;
+            }
+            #sidebar.open {
+                transform: translateX(0);
+            }
+        }
+        .emerald-500-gradient-text { background: linear-gradient(to right, #10b981, #34d399); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+        #cursor-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -5;
+            /* Behind content but above particles which are -10 */
+            background: radial-gradient(circle 400px at var(--mouse-x, 50vw) var(--mouse-y, 50vh), rgba(56, 189, 248, 0.15), transparent 80%);
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="antialiased flex h-screen overflow-hidden relative">
+
+    <!-- Mouse Glow Tracker -->
+    <div id="cursor-glow"></div>
+
+    <!-- Sci-Fi Particles Background -->
+    <div id="particles-js" class="fixed inset-0 -z-10 opacity-100 pointer-events-none"></div>
+
+    <!-- Mobile Header (Visible only on small screens) -->
+    <div class="md:hidden fixed top-0 w-full glass-panel z-40 p-4 border-b border-slate-700 flex justify-between items-center">
+        <a href="index.html" class="text-xl font-bold gradient-text flex items-center"><i class="fa-solid fa-arrow-left text-base mr-3 opacity-80 pt-0.5"></i><img src="logo.png" alt="Logo" class="h-6 w-auto mr-2">NetShield</a>
+        <button id="menu-btn" class="text-gray-300 text-2xl focus:outline-none"><i class="fa-solid fa-bars"></i></button>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="w-64 glass-panel h-full border-r border-slate-800 flex flex-col pt-16 md:pt-0 shrink-0">
+        <div class="p-6">
+            <a href="index.html" class="flex items-center text-sm text-gray-400 hover:text-emerald-500 mb-6 transition"><i class="fa-solid fa-angle-left mr-2"></i> Back to Hub</a>
+            <h1 class="text-2xl font-bold emerald-500-gradient-text mb-2 flex items-center"><img src="logo.png" alt="NetShield Logo" class="h-8 mr-3 drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">NetShield</h1>
+            <p class="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-8">Dashboard</p>
+            
+            <nav class="space-y-2">
+                <a href="#intro" class="flex items-center p-3 rounded-lg text-gray-300 hover:bg-slate-800 hover:text-emerald-500 transition">
+                    <i class="fa-solid fa-circle-info w-6"></i> Introduction
+                </a>
+                <a href="#modus-operandi" class="flex items-center p-3 rounded-lg text-gray-300 hover:bg-slate-800 hover:text-emerald-500 transition">
+                    <i class="fa-solid fa-user-secret w-6"></i> Modus Operandi
+                </a>
+                <a href="#prevention" class="flex items-center p-3 rounded-lg text-gray-300 hover:bg-slate-800 hover:text-accent transition">
+                    <i class="fa-solid fa-shield-check w-6"></i> Prevention Tips
+                </a>
+                <a href="#news" class="flex items-center p-3 rounded-lg text-gray-300 hover:bg-slate-800 hover:text-emerald-500 transition">
+                    <i class="fa-solid fa-newspaper w-6"></i> Live Case Studies
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 h-full overflow-y-auto w-full pt-16 md:pt-0 bg-slate-900/40 custom-scrollbar relative scroll-smooth">
+        
+        <div class="max-w-5xl mx-auto p-6 md:p-12 pb-24">
+            
+            <!-- Page Header -->
+            <div class="mb-12 border-b border-slate-800 pb-8">
+                <div class="inline-block px-3 py-1 bg-emerald-500/20 border border-emerald-500/40 text-emerald-500 rounded-full text-xs font-bold mb-4">Educational Guide</div>
+                <h1 class="text-4xl md:text-5xl font-extrabold mb-4 text-white">Task & Part-Time Job Scams</h1>
+                <p class="text-lg text-gray-400">Work-from-home task scams prey on the desire for extra income. They start by offering real, micro-payments for effortless tasks to build trust, before trapping victims in a psychological 'sunk-cost' vortex.</p>
+            </div>
+
+            <!-- Introduction Section (Danger Theme) -->
+            <section id="intro" class="mb-16">
+                <div class="glass-panel p-8 rounded-2xl border-l-4 border-l-emerald-500 relative overflow-hidden">
+                    <i class="fa-solid fa-briefcase absolute -right-4 -bottom-4 text-9xl text-emerald-500 opacity-10"></i>
+                    <h2 class="text-2xl font-bold mb-4 text-white flex items-center"><i class="fa-solid fa-briefcase text-emerald-500 mr-3"></i> The Illusion of Easy Money</h2>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        Phishing and Smishing (SMS Phishing) revolve around impersonation. Attackers send highly believable messages masquerading as trusted institutions (banks, government, couriers) to induce panic or urgency. Their goal is almost always to make you click a malicious link and manually input your credentials, credit card details, or OTPs on a counterfeit website.
+                    </p>
+                    <div class="bg-emerald-500/10 p-5 rounded-lg border border-emerald-500/30">
+                        <h3 class="text-xl font-black text-emerald-500 mb-2 uppercase tracking-wide">The Golden Rule</h3>
+                        <p class="text-white text-lg font-medium">Legitimate jobs pay you. <u class='decoration-emerald-500 decoration-wavy underline-offset-4'> NEVER pay a 'deposit' to unlock a job or a higher commission tier!</u></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Modus Operandi (Danger Theme) -->
+            <section id="modus-operandi" class="mb-16 pt-8">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold mb-2 flex items-center"><i class="fa-solid fa-skull-crossbones text-emerald-500 mr-3"></i> How Scams Work (Modus Operandi)</h2>
+                    <div class="w-16 h-1 bg-emerald-500 rounded"></div>
+                    <p class="text-gray-400 mt-3">The four most common techniques scammers use right now to steal your identity and money.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Card 1 -->
+                    <div class="glass-panel p-6 rounded-xl border border-slate-700 hover:border-emerald-500/50 transition">
+                        <h3 class="text-xl font-bold text-emerald-500 mb-3 flex items-center"><i class="fa-solid fa-fish mr-2"></i> The Bait (Small Payouts)</h3>
+                        <p class="text-sm text-gray-400 flex-1">You are contacted via WhatsApp/Telegram offering ₹50 for liking YouTube videos or leaving 5-star hotel reviews. They actually pay you the first few times.</p>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="glass-panel p-6 rounded-xl border border-slate-700 hover:border-emerald-500/50 transition">
+                        <h3 class="text-xl font-bold text-emerald-500 mb-3 flex items-center"><i class="fa-solid fa-gem mr-2"></i> The Premium/Prepaid Task</h3>
+                        <p class="text-sm text-gray-400 flex-1">Once trust is established, you're assigned a 'prepaid task' where you must deposit ₹2000 to earn a 30% commission. It works the first time.</p>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="glass-panel p-6 rounded-xl border border-slate-700 hover:border-emerald-500/50 transition">
+                        <h3 class="text-xl font-bold text-emerald-500 mb-3 flex items-center"><i class="fa-solid fa-link mr-2"></i> The Sunk-Cost Trap</h3>
+                        <p class="text-sm text-gray-400 flex-1">The tasks require larger and larger deposits (₹50k, ₹1L). When you try to withdraw, they claim your 'merchant score' is low and you must do one final task to unlock funds.</p>
+                    </div>
+                    <!-- Card 4 -->
+                    <div class="glass-panel p-6 rounded-xl border border-slate-700 hover:border-emerald-500/50 transition">
+                        <h3 class="text-xl font-bold text-emerald-500 mb-3 flex items-center"><i class="fa-solid fa-snowflake mr-2"></i> The Account Freeze</h3>
+                        <p class="text-sm text-gray-400 flex-1">After draining all your savings, the scammers freeze your dashboard account and delete the Telegram group. Your money is gone forever.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Prevention Tips (Safety Theme) -->
+            <section id="prevention" class="mb-16 pt-8">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold mb-2 flex items-center text-accent"><i class="fa-solid fa-shield-halved mr-3"></i> Ultimate Prevention Guide</h2>
+                    <div class="w-16 h-1 bg-accent rounded"></div>
+                    <p class="text-gray-400 mt-3">Follow these strict rules to immunize yourself against social engineering.</p>
+                </div>
+
+                <div class="glass-panel p-8 rounded-2xl border border-accent/30 bg-accent/5">
+                    <ul class="space-y-6">
+                        <li class="flex items-start">
+                            <div class="shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500 mr-4 mt-1 border border-emerald-500/50"><i class="fa-solid fa-1 font-bold"></i></div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white mb-1">Verify the Recruiter</h4>
+                                <p class="text-gray-400 text-sm">Real companies do not hire via anonymous Telegram/WhatsApp messages offering ₹5,000/day for 'liking videos'.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500 mr-4 mt-1 border border-emerald-500/50"><i class="fa-solid fa-2 font-bold"></i></div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white mb-1">Recognize the Bait</h4>
+                                <p class="text-gray-400 text-sm">If a job involves 'recharging' an account with cryptocurrency or UPI to complete virtual orders, it is a guaranteed scam.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500 mr-4 mt-1 border border-emerald-500/50"><i class="fa-solid fa-3 font-bold"></i></div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white mb-1">Do Not Chase Losses</h4>
+                                <p class="text-gray-400 text-sm">If your money gets 'stuck' demanding a higher deposit to withdraw, STOP. Any further transfer will also be stolen.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500 mr-4 mt-1 border border-emerald-500/50"><i class="fa-solid fa-4 font-bold"></i></div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white mb-1">Beware of Group Chat Illusions</h4>
+                                <p class="text-gray-400 text-sm">Those 50 people in the Telegram group posting screenshots of their 'profits' are all bots or the scammers themselves.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- News Feed Section -->
+            <section id="news" class="pt-8">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold mb-2 flex items-center"><i class="fa-solid fa-tower-broadcast text-emerald-500 mr-3"></i> Live Threat Feed & Case Studies</h2>
+                    <div class="w-16 h-1 bg-emerald-500 rounded"></div>
+                    <p class="text-gray-400 mt-3">Recent real-world incidents showing how these scams are executed in real time.</p>
+                </div>
+
+                <!-- Scrolling Container -->
+                <div class="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
+                    <div class="flex items-center justify-between mb-4 pb-4 border-b border-slate-700">
+                        <span class="text-xs font-bold tracking-widest text-emerald-500 uppercase flex items-center"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping mr-2"></span> Real Time Reports</span>
+                    </div>
+
+                    <div class="scrolling-wrapper">
+                        <div class="scrolling-content space-y-4">
+                            <!-- 1 -->
+                            <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-emerald-500">
+                                <div class="flex justify-between text-xs text-gray-500 mb-2"><span><i class="fa-solid fa-location-dot mr-1"></i> Bangalore</span> <span>Recent</span></div>
+                                <h4 class="font-bold text-white mb-1">Software Engineer Ruined</h4>
+                                <p class="text-sm text-gray-400">Techie lost ₹25 Lakhs trying to withdraw his initial ₹5 Lakh 'investment' in a fake hotel review app. Borrowed heavily to unlock his frozen dashboard.</p>
+                            </div>
+                            <!-- 2 -->
+                            <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-emerald-500">
+                                <div class="flex justify-between text-xs text-gray-500 mb-2"><span><i class="fa-solid fa-location-dot mr-1"></i> Pune</span> <span>Recent</span></div>
+                                <h4 class="font-bold text-white mb-1">YouTube Like Scam</h4>
+                                <p class="text-sm text-gray-400">College student lost ₹1.2L of tuition fees. Scammers paid him ₹150 three times perfectly before initiating the massive prepaid deposit trap.</p>
+                            </div>
+                            <!-- 3 -->
+                            <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-emerald-500">
+                                <div class="flex justify-between text-xs text-gray-500 mb-2"><span><i class="fa-solid fa-location-dot mr-1"></i> Ahmedabad</span> <span>Recent</span></div>
+                                <h4 class="font-bold text-white mb-1">Movie Review Fraud</h4>
+                                <p class="text-sm text-gray-400">A housewife lost ₹8 Lakhs evaluating 'IMDb ratings' on a counterfeit website, lured by the promise of earning ₹10,000 daily.</p>
+                            </div>
+                            <!-- 4 -->
+                            <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-emerald-500">
+                                <div class="flex justify-between text-xs text-gray-500 mb-2"><span><i class="fa-solid fa-location-dot mr-1"></i> Jaipur</span> <span>Recent</span></div>
+                                <h4 class="font-bold text-white mb-1">Crypto Rating Trap</h4>
+                                <p class="text-sm text-gray-400">Retiree drained his entire ₹15 Lakh pension into a 'Telegram Trading Group' where bots constantly praised an admins fake crypto signals.</p>
+                            </div>
+                            <!-- 5 -->
+                            <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-emerald-500">
+                                <div class="flex justify-between text-xs text-gray-500 mb-2"><span><i class="fa-solid fa-location-dot mr-1"></i> Lucknow</span> <span>Recent</span></div>
+                                <h4 class="font-bold text-white mb-1">Product Rating Scam</h4>
+                                <p class="text-sm text-gray-400">A teacher deposited ₹3 Lakhs to increase her 'merchant score' on a fake international e-commerce website so she could withdraw her imaginary earnings.</p>
+                            </div>
+                            <!-- 6 -->
+                            <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-emerald-500">
+                                <div class="flex justify-between text-xs text-gray-500 mb-2"><span><i class="fa-solid fa-location-dot mr-1"></i> Surat</span> <span>Recent</span></div>
+                                <h4 class="font-bold text-white mb-1">Freelance Graphic Trap</h4>
+                                <p class="text-sm text-gray-400">A designer was hired for freelance work, but was told he must first purchase a ₹40,000 'ID Card and Software License' via UPI to get his first paycheck.</p>
+                            </div>
+                            <!-- Duplicate the list for seamless infinite looping -->
+                            <!-- 1 (Duplicate) -->
+                            <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-emerald-500 mt-4">
+                                <div class="flex justify-between text-xs text-gray-500 mb-2"><span><i class="fa-solid fa-location-dot mr-1"></i> Bangalore</span> <span>Recent</span></div>
+                                <h4 class="font-bold text-white mb-1">Software Engineer Ruined</h4>
+                                <p class="text-sm text-gray-400">Techie lost ₹25 Lakhs trying to withdraw his initial ₹5 Lakh 'investment' in a fake hotel review app. Borrowed heavily to unlock his frozen dashboard.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        // Smooth scrolling for sidebar links
+        document.querySelectorAll('aside nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
+                
+                // Close mobile menu on click
+                if(window.innerWidth < 768) {
+                    document.getElementById('sidebar').classList.remove('open');
+                }
+            });
+        });
+
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const sidebar = document.getElementById('sidebar');
+
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+        
+        // Active spy roughly based on scroll
+        const sections = document.querySelectorAll('main section');
+        const navLinks = document.querySelectorAll('aside nav a');
+        
+        document.querySelector('main').addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (document.querySelector('main').scrollTop >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('bg-slate-800', 'font-bold');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('bg-slate-800', 'font-bold');
+                }
+            });
+        });
+
+        
+        // Mouse Glow effect tracking
+        document.addEventListener('mousemove', (e) => {
+            const glow = document.getElementById('cursor-glow');
+            if (glow) {
+                // Change hue slightly based on mouse position to make it more colorful
+                const hue = Math.round((e.clientX / window.innerWidth) * 80 + 190); // 190 to 270 (cyan to purple)
+                glow.style.background = `radial-gradient(circle 400px at ${e.clientX}px ${e.clientY}px, hsla(${hue}, 100%, 65%, 0.2), transparent 70%)`;
+            }
+        });
+
+        
+        // Mouse Glow effect tracking
+        document.addEventListener('mousemove', (e) => {
+            const glow = document.getElementById('cursor-glow');
+            if (glow) {
+                // Change hue slightly based on mouse position to make it more colorful
+                const hue = Math.round((e.clientX / window.innerWidth) * 80 + 190); // 190 to 270 (cyan to purple)
+                glow.style.background = `radial-gradient(circle 400px at ${e.clientX}px ${e.clientY}px, hsla(${hue}, 100%, 65%, 0.2), transparent 70%)`;
+            }
+        });
+
+        // Initialize particles.js for Sci-Fi Effect
+        if (typeof particlesJS !== 'undefined') {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": { "value": 110, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": ["#38bdf8", "#818cf8", "#c084fc", "#e879f9", "#34d399"] },
+                    "shape": { "type": "circle" },
+                    "opacity": {
+                        "value": 0.9,
+                        "random": true,
+                        "anim": { "enable": true, "speed": 1, "opacity_min": 0.3, "sync": false }
+                    },
+                    "size": {
+                        "value": 4,
+                        "random": true,
+                        "anim": { "enable": true, "speed": 2, "size_min": 1.5, "sync": false }
+                    },
+                    "line_linked": {
+                        "enable": true, "distance": 160, "color": "#818cf8", "opacity": 0.6, "width": 1.5
+                    },
+                    "move": {
+                        "enable": true, "speed": 2, "direction": "none", "random": true, "out_mode": "out"
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "window",
+                    "events": {
+                        "onhover": { "enable": true, "mode": ["grab", "bubble"] },
+                        "onclick": { "enable": true, "mode": "push" },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": { "distance": 220, "line_linked": { "opacity": 0.9 } },
+                        "bubble": { "distance": 200, "size": 6, "duration": 2, "opacity": 1, "speed": 3 },
+                        "push": { "particles_nb": 4 }
+                    }
+                },
+                "retina_detect": true
+            });
+        }
+    </script>
+</body>
+</html>
